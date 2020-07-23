@@ -1,16 +1,18 @@
 const express = require('express'),
       mongoose = require('mongoose'),
-      bodyParser = require('body-parser'),
-      path = require('path')
+      path = require('path'),
       cors = require('cors'),
+      config = require('config'),
       app = express();
 
-const indexRoute = require('./routes/api/items.routes')
+const indexRoute = require('./routes/api/items.routes'),
+      userRoute = require('./routes/api/users.routes'),
+      authRoute = require('./routes/api/auth.routes')
 
 app.use(cors())
 
-app.use(bodyParser.json());
-const db = require('./config/keys').mongoURI;
+app.use(express.json());
+const db = config.get('mongoURI')
 
 mongoose
     .connect(db, {
@@ -22,6 +24,8 @@ mongoose
     .catch((err) => {console.log(err)})
 
 app.use('/api/items' ,indexRoute)
+app.use('/api/users', userRoute)
+app.use('/api/auth', authRoute)
 
 // serve static products if in production
 if(process.env.NODE_ENV === 'production'){

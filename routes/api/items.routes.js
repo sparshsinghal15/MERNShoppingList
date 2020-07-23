@@ -1,5 +1,6 @@
 const express = require('express'),
       router = express.Router(),
+      auth = require('../../middleware/auth'),
       Item = require('../../models/item.model');
 
 router.get('/', (req, res) => {
@@ -10,7 +11,7 @@ router.get('/', (req, res) => {
     //     .sort({date: -1})
     //     .then(items => res.json(items))
 })
-router.post('/', (req, res) => {
+router.post('/', auth ,(req, res) => {
     // const item = req.body.name;
     // Item.create(item, (err, newItem) => {
     //     if(err) {
@@ -27,7 +28,7 @@ router.post('/', (req, res) => {
 
     newItem.save().then(item => res.json(item))
 })
-router.delete('/:id', (req, res) => {
+router.delete('/:id',auth, (req, res) => {
     Item.findByIdAndDelete(req.params.id, (err) => {
         if (err) {
             console.log(err)
