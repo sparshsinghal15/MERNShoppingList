@@ -33,13 +33,15 @@ export const addItems = (item) => (dispatch, getState) => {
 export const deleteItems = (id) => (dispatch, getState) => {
 	axios
 		.delete(`/api/items/${id}`, tokenConfig(getState))
-		.then((res) =>
+		.then((res) => {
+			console.log('button clicked', id);
 			dispatch({
 				type: DELETE_ITEMS,
 				payload: id
-			})
-		)
+			});
+		})
 		.catch((err) => {
+			console.log('some error in delete button');
 			dispatch(returnErrors(err.response.data, err.response.status));
 		});
 };
